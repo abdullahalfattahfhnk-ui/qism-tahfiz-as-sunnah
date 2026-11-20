@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  /* Emerald brand scale */
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-200: #a7f3d0;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065f46;
+  --color-brand-900: #064e3b;
+
+  /* Surfaces and text */
+  --color-canvas: #f8faf9;
+  --color-surface: #ffffff;
+  --color-line: #e4e9e6;
+  --color-ink: #1f2933;
+  --color-ink-muted: #5b6770;
+
+  --font-sans: var(--font-inter), var(--font-bengali), var(--font-arabic),
+    ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    min-height: 100dvh;
+  }
+
+  /* Script-specific typography */
+  html[lang="bn"] body {
+    font-family: var(--font-bengali), var(--font-inter), sans-serif;
+    line-height: 1.7;
+  }
+  html[lang="ar"] body {
+    font-family: var(--font-arabic), var(--font-inter), sans-serif;
+    line-height: 1.9;
+  }
+  html[lang="en"] body {
+    line-height: 1.6;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
