@@ -1,10 +1,21 @@
 import type { Metadata } from "next";
+import { Inter, Noto_Naskh_Arabic, Noto_Sans_Bengali } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getDirection, routing } from "@/i18n/routing";
 import { BRAND } from "@/lib/brand";
 import "../globals.css";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const bengali = Noto_Sans_Bengali({
+  subsets: ["bengali"],
+  variable: "--font-bengali",
+});
+const arabic = Noto_Naskh_Arabic({
+  subsets: ["arabic"],
+  variable: "--font-arabic",
+});
 
 type Props = {
   children: React.ReactNode;
@@ -21,7 +32,10 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
   return {
-    title: `${BRAND.nameAr} | ${BRAND.nameEn}`,
+    title: {
+      default: `${BRAND.nameAr} | ${BRAND.nameEn}`,
+      template: `%s | ${BRAND.nameAr}`,
+    },
     description: t("description"),
   };
 }
@@ -32,10 +46,14 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} dir={getDirection(locale)}>
+    <html
+      lang={locale}
+      dir={getDirection(locale)}
+      className={`${inter.variable} ${bengali.variable} ${arabic.variable}`}
+    >
       <body className="antialiased">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
   );
-}
+        }
