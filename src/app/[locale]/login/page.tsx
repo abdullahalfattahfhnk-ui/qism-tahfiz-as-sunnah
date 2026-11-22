@@ -1,61 +1,77 @@
-import { Link } from "@/i18n/navigation";
+import { ClipboardList, Library, Megaphone } from "lucide-react";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { LoginForm } from "@/components/auth/login-form";
+import { Brand } from "@/components/layout/brand";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { getSupabaseEnv } from "@/lib/supabase/env";
 
-export default async function LoginPage() {
-  const hasSupabase = Boolean(getSupabaseEnv());
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "nav" });
+  return { title: t("login") };
+}
+
+export default async function LoginPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { locale } = await params;
+  const { error } = await searchParams;
+  setRequestLocale(locale);
+  const t = await getTranslations("login");
+
+  const points = [
+    { icon: Library, text: t("points.materials") },
+    { icon: ClipboardList, text: t("points.assignments") },
+    { icon: Megaphone, text: t("points.announcements") },
+  ];
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-6 bg-background text-foreground">
-      <div className="w-full max-w-md rounded-2xl border p-6 shadow-sm space-y-5">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold">Qism Tahfiz as-Sunnah</h1>
-          <p className="text-sm opacity-80">
-            {hasSupabase
-              ? "Supabase authentication is configured."
-              : "Demo mode is active (Supabase environment variables not set yet)."}
-          </p>
+    <main className="grid min-h-dvh lg:grid-cols-[5fr_6fr]">
+      <aside className="hidden flex-col justify-between bg-brand-900 p-12 text-white lg:flex">
+        <Brand tone="light" />
+        <div>
+          <h2 className="max-w-xs text-3xl font-semibold leading-snug">
+            {t("panelTitle")}
+          </h2>
+          <ul className="mt-8 space-y-4">
+            {points.map(({ icon: Icon, text }) => (
+              <li key={text} className="flex items-center gap-3 text-brand-100">
+                <Icon className="size-5 shrink-0" aria-hidden />
+                {text}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <span aria-hidden />
+      </aside>
+
+      <section className="flex flex-col px-5 py-6 sm:px-10">
+        <div className="flex items-center justify-between gap-3">
+          <div className="lg:hidden">
+            <Brand />
+          </div>
+          <div className="ms-auto">
+            <LanguageSwitcher compact />
+          </div>
         </div>
 
-        <form className="space-y-4">
-          <div className="space-y-1.5">
-            <label className="block text-sm font-medium" htmlFor="email">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="name@example.com"
-              className="w-full rounded-lg border px-3 py-2 text-sm bg-transparent"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="block text-sm font-medium" htmlFor="password">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              className="w-full rounded-lg border px-3 py-2 text-sm bg-transparent"
-            />
-          </div>
-
-          <button
-            type="button"
-            className="w-full rounded-lg py-2.5 text-sm font-semibold border opacity-90"
-          >
-            Sign in
-          </button>
-        </form>
-
-        <div className="pt-2 border-t flex items-center justify-between text-sm">
-          <Link href="/" className="underline">
-            ← Home
-          </Link>
-          <span className="text-xs opacity-70">/login</span>
+        <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center py-10">
+          <h1 className="text-2xl font-semibold text-brand-900">{t("title")}</h1>
+          <p className="mb-8 mt-2 text-ink-muted">{t("subtitle")}</p>
+          <LoginForm
+            configured={Boolean(getSupabaseEnv())}
+            initialError={error === "inactive" ? "inactive" : undefined}
+          />
         </div>
-      </div>
+      </section>
     </main>
   );
 }
