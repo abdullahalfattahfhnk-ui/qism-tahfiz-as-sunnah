@@ -1,0 +1,77 @@
+{
+  "login": {
+    "noAccount": "New here? Create an account. An administrator must approve it before you can use the platform.",
+    "signupLink": "Create an account",
+    "confirmed": "Your email is confirmed. Sign in to continue."
+  },
+  "signup": {
+    "title": "Request access",
+    "subtitle": "Create an account. An administrator must approve it before you can use the platform.",
+    "fullName": "Full name",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Create account",
+    "submitting": "Creating account…",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "checkEmailTitle": "Check your email",
+    "checkEmailBody": "We sent a confirmation link to your email. Open it, then sign in. After that, an administrator will review your request.",
+    "errors": {
+      "invalid": "Enter your full name, a valid email and a password of at least 8 characters.",
+      "exists": "This email may already be registered. Try signing in.",
+      "weak": "This password is too weak. Choose a longer or less common one.",
+      "unavailable": "Sign-up is temporarily unavailable. Please try again later.",
+      "rateLimited": "Too many attempts. Please wait a few minutes and try again."
+    }
+  },
+  "waiting": {
+    "title": "Waiting for approval",
+    "pendingBody": "Your account was created. An administrator will review it and assign your role and class. You will get access as soon as it is approved.",
+    "refresh": "Check again",
+    "rejectedTitle": "Request not approved",
+    "rejectedBody": "Your request was not approved. Contact your administrator if you think this is a mistake.",
+    "suspendedTitle": "Account paused",
+    "suspendedBody": "Your account is currently not active. Contact your administrator.",
+    "signedInAs": "Signed in as {name}",
+    "signOut": "Sign out"
+  },
+  "adminUsers": {
+    "title": "Account requests",
+    "description": "Approve new accounts and assign a role and class.",
+    "pendingHeading": "Waiting for approval",
+    "handledHeading": "Recently handled",
+    "none": "No accounts are waiting.",
+    "email": "Email",
+    "verified": "Email verified",
+    "notVerified": "Email not verified",
+    "requested": "Requested {when}",
+    "role": "Role",
+    "class": "Class",
+    "studentCode": "Student ID (optional)",
+    "approve": "Approve",
+    "reject": "Reject",
+    "roles": {
+      "student": "Student",
+      "teacher": "Teacher"
+    },
+    "status": {
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "pending": "Pending",
+      "suspended": "Paused"
+    },
+    "noClasses": "No class exists yet. Create one in Supabase (or run the seed) before approving users.",
+    "results": {
+      "approved": "Account approved.",
+      "rejected": "Request rejected.",
+      "error": "That action failed. Check the details and try again.",
+      "unverified": "This email is not verified yet, so it cannot be approved."
+    },
+    "back": "Back to admin",
+    "pendingCount": "Waiting for approval: {n}",
+    "open": "Review requests"
+  }
+}
