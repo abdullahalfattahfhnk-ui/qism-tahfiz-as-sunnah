@@ -1,7 +1,233 @@
 {
-  "meta": { "description": "A modern digital classroom for Islamic education." },
+  "meta": {
+    "description": "A modern digital classroom for Islamic education."
+  },
   "home": {
     "title": "The platform is deploying",
     "body": "The full application is being uploaded."
+  },
+  "language": {
+    "label": "Language"
+  },
+  "nav": {
+    "login": "Login",
+    "dashboard": "Home",
+    "study": "Study",
+    "library": "Library",
+    "assignments": "Assignments",
+    "announcements": "Announcements",
+    "schedule": "Class schedule",
+    "students": "Students",
+    "profile": "Profile",
+    "admin": "Admin dashboard"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Use the account your teacher or administrator created for you.",
+    "email": "Email",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Sign in",
+    "notConnected": "Sign-in is not set up yet. Add the Supabase keys to .env.local.",
+    "noAccount": "There is no public registration. Ask your administrator for an account.",
+    "previewLink": "Preview the interface with demo data",
+    "panelTitle": "Your class, in one place",
+    "points": {
+      "materials": "Study materials and books",
+      "assignments": "Assignments and deadlines",
+      "announcements": "Class announcements"
+    },
+    "signingIn": "Signing in…",
+    "errors": {
+      "invalid": "Incorrect email or password.",
+      "disabled": "This account is disabled. Contact your administrator.",
+      "unavailable": "Sign-in is temporarily unavailable. Please try again later.",
+      "inactive": "Your account is not active. Contact your administrator."
+    }
+  },
+  "shell": {
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main navigation",
+    "demoNotice": "This page shows sample content, not real data.",
+    "exitPreview": "Exit preview",
+    "userName": "Demo user",
+    "roles": {
+      "super_admin": "Super admin",
+      "teacher": "Teacher",
+      "student": "Student"
+    },
+    "access": {
+      "title": "You don't have access to this page",
+      "body": "In the real platform this is enforced by the server and database rules. Here it only previews the behavior.",
+      "back": "Back to home"
+    },
+    "signOut": "Sign out"
+  },
+  "dashboard": {
+    "greeting": "As-salamu alaykum, {name}",
+    "nextClass": "Next class",
+    "today": "Today",
+    "noClassesToday": "No classes today.",
+    "todaySchedule": "Today's schedule",
+    "latestAnnouncements": "Latest announcements",
+    "assignmentsDue": "Assignments due",
+    "viewAll": "View all",
+    "noAssignments": "No pending assignments."
+  },
+  "schedule": {
+    "description": "Weekly timetable, Saturday to Thursday.",
+    "today": "Today",
+    "current": "In progress",
+    "room": "Room {n}"
+  },
+  "announcements": {
+    "description": "Updates from your teachers and the administration.",
+    "pinned": "Pinned",
+    "categories": {
+      "general": "General",
+      "academic": "Academic",
+      "event": "Event"
+    },
+    "newAnnouncement": "New announcement",
+    "availableLater": "Posting is connected to the database in Step 4."
+  },
+  "demo": {
+    "badge": "Demo data",
+    "subjects": {
+      "hadith": "Hadith memorization",
+      "arabic": "Arabic grammar",
+      "fiqh": "Fiqh",
+      "sirah": "Sirah",
+      "tajweed": "Tajweed"
+    },
+    "people": {
+      "abdullah": "Ustadh Abdullah",
+      "ibrahim": "Ustadh Ibrahim",
+      "yusuf": "Ustadh Yusuf",
+      "admin": "Administration"
+    },
+    "announcements": {
+      "a1": {
+        "title": "Welcome to the new term",
+        "body": "Classes start on time each morning. Please bring your notebook and attend every session."
+      },
+      "a2": {
+        "title": "Monthly review next week",
+        "body": "A short oral review of the memorized material will be held. Revise the lessons covered this month."
+      },
+      "a3": {
+        "title": "Guardians' meeting",
+        "body": "A meeting with guardians will be held on Thursday after the last class."
+      },
+      "a4": {
+        "title": "Library hours updated",
+        "body": "The class library will open for one hour after the final lesson."
+      }
+    },
+    "assignments": {
+      "s1": "Memorize this week's hadith set",
+      "s2": "Grammar exercises, chapter 3",
+      "s3": "Short summary of the lesson on purification",
+      "s4": "Sirah reading summary",
+      "s5": "Tajweed recitation recording"
+    },
+    "className": "Demo class",
+    "students": {
+      "hamza": "Hamza",
+      "bilal": "Bilal",
+      "salman": "Salman",
+      "yahya": "Yahya",
+      "idris": "Idris",
+      "zayd": "Zayd",
+      "anas": "Anas",
+      "mikail": "Mikail"
+    },
+    "resources": {
+      "r1": "Hadith memorization notes, week 1",
+      "r2": "Arabic grammar workbook",
+      "r3": "Fiqh summary sheets",
+      "r4": "Sirah overview",
+      "r5": "Tajweed recitation practice",
+      "r6": "Hadith collection, study edition",
+      "r7": "Arabic grammar reference",
+      "r8": "Tajweed rules chart"
+    }
+  },
+  "study": {
+    "description": "Your subjects and your progress in each one.",
+    "progress": "{done} of {total} lessons",
+    "nextLesson": "Next: lesson {n}",
+    "allDone": "All lessons completed"
+  },
+  "library": {
+    "description": "Books, notes, audio and worksheets shared by your teachers.",
+    "search": "Search the library",
+    "filters": {
+      "all": "All",
+      "book": "Books",
+      "notes": "Notes",
+      "audio": "Audio",
+      "worksheet": "Worksheets"
+    },
+    "empty": "No resources match your search.",
+    "download": "Download",
+    "downloadLater": "Downloads are connected to storage in Step 4.",
+    "added": "Added {when}"
+  },
+  "assignments": {
+    "description": "Work from your teachers, with due dates.",
+    "overdue": "Overdue",
+    "pending": "To do",
+    "submitted": "Submitted",
+    "due": "Due {when}",
+    "submit": "Submit",
+    "create": "Create assignment",
+    "availableLater": "Submitting and creating assignments are connected in Step 4.",
+    "submittedLabel": "Submitted"
+  },
+  "students": {
+    "description": "Students in your class.",
+    "add": "Add student",
+    "availableLater": "Adding students is connected in Step 4.",
+    "name": "Name",
+    "id": "Student ID",
+    "status": "Status",
+    "active": "Active",
+    "count": "Total students: {n}"
+  },
+  "profile": {
+    "description": "Your account details.",
+    "name": "Full name",
+    "email": "Email",
+    "role": "Role",
+    "class": "Class",
+    "language": "Language",
+    "save": "Save changes",
+    "availableLater": "Editing your profile is turned on in Step 4."
+  },
+  "admin": {
+    "description": "Overview and management tools.",
+    "stats": {
+      "students": "Students",
+      "teachers": "Teachers",
+      "subjects": "Subjects",
+      "resources": "Resources"
+    },
+    "manage": "Management",
+    "items": {
+      "users": "Manage students and teachers",
+      "content": "Manage academic content",
+      "announcements": "Publish announcements",
+      "permissions": "Control permissions"
+    },
+    "availableLater": "Management tools are connected in Step 4.",
+    "recent": "Recent activity",
+    "activity": {
+      "posted": "{person} posted an announcement",
+      "uploaded": "{person} uploaded a resource",
+      "submitted": "A student submitted an assignment"
+    }
   }
 }
