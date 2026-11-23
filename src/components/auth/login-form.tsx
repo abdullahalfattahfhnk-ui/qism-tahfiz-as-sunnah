@@ -14,11 +14,15 @@ type Props = {
   /** True when the Supabase keys are set. Otherwise the form is design-only. */
   configured: boolean;
   initialError?: "inactive";
+  /** True after the email-confirmation link was opened. */
+  confirmed?: boolean;
 };
 
-export function LoginForm({ configured, initialError }: Props) {
+export function LoginForm({ configured, initialError, confirmed }: Props) {
   const t = useTranslations("login");
   const locale = useLocale();
+  // Controlled so a failed attempt does not clear the email.
+  const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [attempted, setAttempted] = useState(false);
   const [state, formAction, pending] = useActionState(
@@ -41,6 +45,16 @@ export function LoginForm({ configured, initialError }: Props) {
       }
       className="space-y-5"
     >
+      {confirmed && !errorKey && (
+        <p
+          role="status"
+          className="flex items-start gap-2 rounded-lg bg-brand-50 px-3 py-2.5 text-sm text-brand-900"
+        >
+          <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
+          {t("confirmed")}
+        </p>
+      )}
+
       <div className="space-y-1.5">
         <label htmlFor="email" className="text-sm font-medium">
           {t("email")}
@@ -52,6 +66,8 @@ export function LoginForm({ configured, initialError }: Props) {
           dir="ltr"
           autoComplete="username"
           required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className={`${inputClass} text-start`}
         />
       </div>
@@ -111,8 +127,17 @@ export function LoginForm({ configured, initialError }: Props) {
       )}
 
       <div className="space-y-3 border-t border-line pt-5 text-sm text-ink-muted">
-        <p>{t("noAccount")}</p>
-        {!configured && (
+        {configured ? (
+          <>
+            <p>{t("noAccount")}</p>
+            <Link
+              href="/signup"
+              className="inline-block font-medium text-brand-700 underline underline-offset-4 hover:text-brand-900"
+            >
+              {t("signupLink")}
+            </Link>
+          </>
+        ) : (
           <Link
             href="/dashboard"
             className="inline-block font-medium text-brand-700 underline underline-offset-4 hover:text-brand-900"
