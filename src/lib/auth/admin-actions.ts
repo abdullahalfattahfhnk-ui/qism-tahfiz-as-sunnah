@@ -22,10 +22,18 @@ const approveSchema = z.object({
 const rejectSchema = z.object({ userId: z.string().uuid() });
 
 type Result = "approved" | "rejected" | "error" | "unverified";
+type Failure = { message: string; code?: string };
 
-function back(locale: string, result: Result): never {
+/** Sends the Super Admin back to the list with a result (and, on errors, a technical detail). */
+function back(locale: string, result: Result, failure?: Failure): never {
+  const detail = failure
+    ? `${failure.code ? `${failure.code}: ` : ""}${failure.message}`.slice(0, 160)
+    : undefined;
   return redirect({
-    href: { pathname: "/admin/users", query: { result } },
+    href: {
+      pathname: "/admin/users",
+      query: detail ? { result, detail } : { result },
+    },
     locale,
   });
 }
@@ -38,7 +46,7 @@ async function isSuperAdmin() {
 
 export async function approveUser(formData: FormData): Promise<void> {
   const locale = safeLocale(formData.get("locale"));
-  if (!(await isSuperAdmin())) back(locale, "error");
+  if (!(await isSuperAdmin())) back(locale, "error", { message: "not a Super Admin session" });
 
   const parsed = approveSchema.safeParse({
     userId: formData.get("userId"),
@@ -46,34 +54,50 @@ export async function approveUser(formData: FormData): Promise<void> {
     role: formData.get("role"),
     studentCode: formData.get("studentCode") ?? "",
   });
-  if (!parsed.success) back(locale, "error");
+  if (!parsed.success) {
+    back(locale, "error", { message: `invalid form: ${parsed.error.issues[0]?.path.join(".")}` });
+  }
   const { userId, classId, role, studentCode } = parsed.data!;
 
-  const supabase = await createClient();
-  const { error } = await supabase.rpc("admin_approve_user", {
-    p_user: userId,
-    p_role: role,
-    p_class: classId,
-    p_student_code: studentCode || null,
-  });
+  let failure: Failure | null = null;
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase.rpc("admin_approve_user", {
+      p_user: userId,
+      p_role: role,
+      p_class: classId,
+      p_student_code: studentCode || null,
+    });
+    if (error) failure = { message: error.message, code: error.code };
+  } catch (e) {
+    failure = { message: e instanceof Error ? e.message : "unknown error" };
+  }
 
-  if (error) {
-    back(locale, error.message.toLowerCase().includes("verified") ? "unverified" : "error");
+  if (failure) {
+    const unverified = failure.message.toLowerCase().includes("verified");
+    back(locale, unverified ? "unverified" : "error", failure);
   }
   back(locale, "approved");
 }
 
 export async function rejectUser(formData: FormData): Promise<void> {
   const locale = safeLocale(formData.get("locale"));
-  if (!(await isSuperAdmin())) back(locale, "error");
+  if (!(await isSuperAdmin())) back(locale, "error", { message: "not a Super Admin session" });
 
   const parsed = rejectSchema.safeParse({ userId: formData.get("userId") });
-  if (!parsed.success) back(locale, "error");
+  if (!parsed.success) back(locale, "error", { message: "invalid form: userId" });
 
-  const supabase = await createClient();
-  const { error } = await supabase.rpc("admin_reject_user", {
-    p_user: parsed.data!.userId,
-  });
+  let failure: Failure | null = null;
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase.rpc("admin_reject_user", {
+      p_user: parsed.data!.userId,
+    });
+    if (error) failure = { message: error.message, code: error.code };
+  } catch (e) {
+    failure = { message: e instanceof Error ? e.message : "unknown error" };
+  }
 
-  back(locale, error ? "error" : "rejected");
+  if (failure) back(locale, "error", failure);
+  back(locale, "rejected");
 }
