@@ -41,10 +41,10 @@ export default async function AdminUsersPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ result?: string }>;
+  searchParams: Promise<{ result?: string; detail?: string }>;
 }) {
   const { locale } = await params;
-  const { result } = await searchParams;
+  const { result, detail } = await searchParams;
   setRequestLocale(locale);
 
   const { role } = await requireViewer(locale);
@@ -101,12 +101,17 @@ export default async function AdminUsersPage({
       </div>
 
       {showResult && (
-        <p
+        <div
           role={resultIsError ? "alert" : "status"}
           className="rounded-lg bg-brand-50 px-3 py-2.5 text-sm text-brand-900"
         >
-          {t(`adminUsers.results.${result}`)}
-        </p>
+          <p>{t(`adminUsers.results.${result}`)}</p>
+          {resultIsError && detail && (
+            <p dir="ltr" className="mt-1 break-all text-xs text-ink-muted">
+              {detail.slice(0, 200)}
+            </p>
+          )}
+        </div>
       )}
 
       <section className="space-y-3">
@@ -227,4 +232,4 @@ export default async function AdminUsersPage({
       )}
     </div>
   );
-                }
+                  }
