@@ -1,7 +1,16 @@
-import { FolderCog, Megaphone, ShieldCheck, Users } from "lucide-react";
+import {
+  ChevronRight,
+  FolderCog,
+  Megaphone,
+  ShieldCheck,
+  UserCheck,
+  Users,
+} from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AccessDenied } from "@/components/ui/access-denied";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Link } from "@/i18n/navigation";
+import { requireViewer } from "@/lib/auth/session";
 import {
   DEMO_ACTIVITY,
   DEMO_RESOURCES,
@@ -9,8 +18,11 @@ import {
   DEMO_STUDY,
   DEMO_TEACHER_COUNT,
 } from "@/lib/demo/data";
-import { requireViewer } from "@/lib/auth/session";
 import { relativeDays } from "@/lib/demo/time";
+import { createClient } from "@/lib/supabase/server";
+
+// Shows a live count for the signed-in Super Admin, so it must not be prerendered.
+export const dynamic = "force-dynamic";
 
 export default async function AdminPage({
   params,
@@ -19,10 +31,18 @@ export default async function AdminPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const { role } = await requireViewer(locale);
-  if (role !== "super_admin") return <AccessDenied />;
+  const viewer = await requireViewer(locale);
+  if (viewer.role !== "super_admin") return <AccessDenied />;
   const t = await getTranslations();
   const num = new Intl.NumberFormat(locale);
+
+  // Real data (not demo): how many sign-ups wait for approval.
+  let pendingCount = 0;
+  if (!viewer.isDemo) {
+    const supabase = await createClient();
+    const { data } = await supabase.rpc("admin_list_users", { p_status: "pending" });
+    pendingCount = Array.isArray(data) ? data.length : 0;
+  }
 
   const stats = [
     { key: "students", value: DEMO_STUDENTS.length },
@@ -43,6 +63,24 @@ export default async function AdminPage({
         <SectionHeader level="h1" title={t("nav.admin")} demo />
         <p className="mt-2 text-ink-muted">{t("admin.description")}</p>
       </div>
+
+      {!viewer.isDemo && (
+        <Link
+          href="/admin/users"
+          className="flex items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-brand-900 transition-colors hover:bg-brand-100"
+        >
+          <span className="flex items-center gap-3">
+            <UserCheck className="size-5 shrink-0 text-brand-700" aria-hidden />
+            <span>
+              <span className="block font-semibold">{t("adminUsers.title")}</span>
+              <span className="block text-sm">
+                {t("adminUsers.pendingCount", { n: pendingCount })}
+              </span>
+            </span>
+          </span>
+          <ChevronRight className="size-4 shrink-0 rtl:-scale-x-100" aria-hidden />
+        </Link>
+      )}
 
       <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line lg:grid-cols-4">
         {stats.map(({ key, value }) => (
